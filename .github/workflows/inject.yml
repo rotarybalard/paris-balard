@@ -1,0 +1,110 @@
+name: Inject CMS data into HTML
+
+on:
+  push:
+    paths:
+      - '_data/**'
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inject data into index.html
+        run: |
+          python3 << 'PYEOF'
+          import json, re, os
+
+          with open('index.html', 'r', encoding='utf-8') as f:
+              html = f.read()
+
+          # --- Réunion ---
+          try:
+              with open('_data/reunion.json', 'r', encoding='utf-8') as f:
+                  r = json.load(f)
+              jour    = r.get('jour', 'Chaque mercredi')
+              horaire = r.get('horaire', '19h00')
+              lieu    = r.get('lieu', 'Hôtel Bedford')
+              adresse = r.get('adresse', "17 rue de l'Arcade")
+              ville   = r.get('ville', '75008 Paris')
+
+              replacements = {
+                'id="reunion-horaire">[^<]*': f'id="reunion-horaire">{horaire}',
+                'id="reunion-jour">[^<]*':    f'id="reunion-jour">{jour}',
+                'id="reunion-lieu">[^<]*':    f'id="reunion-lieu">{lieu}',
+                'id="reunion-adresse">[^<]*': f'id="reunion-adresse">{adresse}<br>{ville}',
+                'id="hero-lieu">[^<]*':       f'id="hero-lieu">{lieu}',
+                'id="hero-jour">[^<]*':       f'id="hero-jour">{jour}',
+                'id="hero-horaire">[^<]*':    f'id="hero-horaire">{horaire}',
+                'id="next-horaire">[^<]*':    f'id="next-horaire">{horaire}',
+                'id="next-lieu">[^<]*':       f'id="next-lieu">{lieu}',
+                'id="next-adresse">[^<]*':    f'id="next-adresse">{adresse}',
+                'id="next-ville">[^<]*':      f'id="next-ville">{ville}',
+              }
+              for pattern, replacement in replacements.items():
+                  html = re.sub(pattern, replacement, html)
+
+              footer_text = f'{lieu} · {adresse} · {ville} · {jour} {horaire}'
+              html = re.sub(r'id="footer-reunion">[^<]*', f'id="footer-reunion">{footer_text}', html)
+          except Exception as e:
+              print(f'Reunion error: {e}')
+
+          # --- Stats ---
+          try:
+              with open('_data/stats.json', 'r', encoding='utf-8') as f:
+                  s = json.load(f)
+              for i in range(1, 5):
+                  for field in ['num', 'desc']:
+                      key = f'stat{i}_{field}'
+                      val = s.get(key, '')
+                      html = re.sub(f'id="stat{i}-{field}">[^<]*', f'id="stat{i}-{field}">{val}', html)
+          except Exception as e:
+              print(f'Stats error: {e}')
+
+          # --- Actions ---
+          try:
+              actions_dir = '_data/actions'
+              cards = []
+              if os.path.exists(actions_dir):
+                  for fname in sorted(os.listdir(actions_dir)):
+                      if fname.endswith('.json'):
+                          with open(os.path.join(actions_dir, fname), 'r', encoding='utf-8') as f:
+                              a = json.load(f)
+                          if a.get('actif', True) not in [False, 'false']:
+                              desc = a.get('description', '')
+                              cards.append(f'''
+                <div class="action-card">
+                  <div class="action-date">{a.get("date","")}</div>
+                  <h3>{a.get("titre","")}</h3>
+                  <p>{desc}</p>
+                  <span class="action-tag">{a.get("categorie","")}</span>
+                </div>''')
+              if cards:
+                  new_grid = '<div class="actions-grid reveal" id="actions-grid">' + ''.join(cards) + '\n    </div>'
+                  html = re.sub(r'<div class="actions-grid reveal" id="actions-grid">.*?</div>\s*</div>', new_grid, html, flags=re.DOTALL)
+          except Exception as e:
+              print(f'Actions error: {e}')
+
+          # --- Contact ---
+          try:
+              with open('_data/contact.json', 'r', encoding='utf-8') as f:
+                  c = json.load(f)
+              if c.get('email'):
+                  html = re.sub(r'href="mailto:[^"]*"', f'href="mailto:{c["email"]}"', html)
+          except Exception as e:
+              print(f'Contact error: {e}')
+
+          with open('index.html', 'w', encoding='utf-8') as f:
+              f.write(html)
+
+          print('✅ index.html mis à jour')
+          PYEOF
+
+      - name: Commit updated HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "🤖 Inject CMS data into HTML"
+          git push
