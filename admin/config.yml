@@ -31,13 +31,14 @@ collections:
     label_singular: Action
     folder: _data/actions
     create: true
+    format: json
     slug: "{{year}}-{{month}}-{{day}}-{{titre}}"
     summary: "{{titre}} — {{date}}"
     identifier_field: titre
     fields:
       - { label: Titre, name: titre, widget: string }
       - { label: Date, name: date, widget: string, hint: "Ex: Juin 2026" }
-      - { label: Description, name: description, widget: text }
+      - { label: Description, name: description, widget: markdown }
       - label: Catégorie
         name: categorie
         widget: select
