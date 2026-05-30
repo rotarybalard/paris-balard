@@ -1,0 +1,78 @@
+backend:
+  name: github
+  repo: thibaud200/paris-balard
+  branch: main
+
+site_url: https://www.rotaryparisbalard.fr
+display_url: https://www.rotaryparisbalard.fr
+locale: fr
+
+media_folder: uploads
+public_folder: /uploads
+
+collections:
+
+  - name: reunions
+    label: Réunions
+    label_singular: Réunion
+    files:
+      - name: infos
+        label: Informations réunion
+        file: _data/reunion.json
+        fields:
+          - { label: Jour, name: jour, widget: string, hint: "Ex: Chaque mercredi" }
+          - { label: Horaire, name: horaire, widget: string, hint: "Ex: 19h00" }
+          - { label: Lieu, name: lieu, widget: string, hint: "Ex: Hôtel Bedford" }
+          - { label: Adresse, name: adresse, widget: string, hint: "Ex: 17 rue de l'Arcade" }
+          - { label: Code postal et ville, name: ville, widget: string, hint: "Ex: 75008 Paris" }
+
+  - name: actions
+    label: Actions & Événements
+    label_singular: Action
+    folder: _data/actions
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Titre, name: titre, widget: string }
+      - { label: Date, name: date, widget: string, hint: "Ex: Juin 2026" }
+      - { label: Description, name: description, widget: text }
+      - label: Catégorie
+        name: categorie
+        widget: select
+        options:
+          - Culture & Solidarité
+          - Solidarité locale
+          - Enfance
+          - Jeunesse & Culture
+          - Santé
+          - Éducation
+          - International
+      - { label: Visible sur le site, name: actif, widget: boolean, default: true }
+
+  - name: stats
+    label: Chiffres clés
+    label_singular: Chiffre
+    files:
+      - name: chiffres
+        label: Chiffres d'impact
+        file: _data/stats.json
+        fields:
+          - { label: Chiffre 1 — Nombre, name: stat1_num, widget: string, hint: "Ex: 3 000" }
+          - { label: Chiffre 1 — Description, name: stat1_desc, widget: string, hint: "Ex: jouets collectés pour Noël 2025" }
+          - { label: Chiffre 2 — Nombre, name: stat2_num, widget: string }
+          - { label: Chiffre 2 — Description, name: stat2_desc, widget: string }
+          - { label: Chiffre 3 — Nombre, name: stat3_num, widget: string }
+          - { label: Chiffre 3 — Description, name: stat3_desc, widget: string }
+          - { label: Chiffre 4 — Nombre, name: stat4_num, widget: string }
+          - { label: Chiffre 4 — Description, name: stat4_desc, widget: string }
+
+  - name: contact
+    label: Contact & Réseaux
+    files:
+      - name: infos
+        label: Informations de contact
+        file: _data/contact.json
+        fields:
+          - { label: Email, name: email, widget: string }
+          - { label: LinkedIn URL, name: linkedin, widget: string }
+          - { label: Instagram URL, name: instagram, widget: string }
