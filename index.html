@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotary Club Paris Balard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8CC7A;
+      --gold-pale: #F5EDD4;
+      --navy: #0D1B2A;
+      --navy-mid: #162436;
+      --navy-soft: #1E3450;
+      --white: #FDFAF4;
+      --text-muted: #8B9BAB;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(13,27,42,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .nav-logo .wheel {
+      width: 38px; height: 38px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .nav-logo .wheel::before {
+      content: '';
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    .nav-logo .wheel::after {
+      content: '';
+      position: absolute;
+      width: 28px; height: 28px;
+      border: 1px dashed rgba(201,168,76,0.4);
+      border-radius: 50%;
+      animation: spin 20s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .nav-logo span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(253,250,244,0.7);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0 4rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 75% 50%, rgba(201,168,76,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(30,52,80,0.8) 0%, transparent 60%),
+        linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #0A1520 100%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 70% 50%, black 0%, transparent 80%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 680px;
+      animation: fadeUp 1s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 0.4rem 1rem;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s 0.1s ease both;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .hero-subtitle {
+      font-size: 1.05rem; font-weight: 300;
+      color: rgba(253,250,244,0.65);
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 3rem;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+    .hero-cta {
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 0.9rem 2.2rem;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-ghost {
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold-light);
+      padding: 0.9rem 2.2rem;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+    .hero-ornament {
+      position: absolute; right: 4rem; top: 50%;
+      transform: translateY(-50%);
+      width: 340px; height: 340px;
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      animation: fadeUp 1s 0.5s ease both;
+    }
+    .hero-ornament::before {
+      content: '';
+      width: 260px; height: 260px;
+      border: 1px solid rgba(201,168,76,0.08);
+      border-radius: 50%;
+    }
+    .hero-ornament-inner {
+      position: absolute;
+      width: 180px; height: 180px;
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    .hero-ornament-inner .year {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-ornament-inner .year-label {
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      animation: fadeUp 1s 0.8s ease both;
+    }
+    .hero-scroll .line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 4rem; }
+
+    .section-header {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(201,168,76,0.3), transparent);
+    }
+    .section-tag {
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+
+    /* ── INFOS CARD ── */
+    #infos { background: var(--navy-mid); }
+    .infos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      background: rgba(201,168,76,0.1);
+    }
+    .info-card {
+      background: var(--navy-mid);
+      padding: 2.5rem;
+      transition: background 0.3s;
+    }
+    .info-card:hover { background: var(--navy-soft); }
+    .info-card .icon {
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .info-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400;
+      color: var(--gold-light);
+      margin-bottom: 0.6rem;
+    }
+    .info-card p {
+      font-size: 0.9rem; font-weight: 300;
+      color: rgba(253,250,244,0.65);
+      line-height: 1.7;
+    }
+    .info-card a { color: var(--gold); text-decoration: none; }
+    .info-card a:hover { text-decoration: underline; }
+
+    /* ── MISSION ── */
+    #mission { position: relative; overflow: hidden; }
+    .mission-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 60% at 90% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mission-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .mission-text p {
+      font-size: 1.05rem; font-weight: 300;
+      color: rgba(253,250,244,0.7);
+      line-height: 1.85;
+      margin-bottom: 1.4rem;
+    }
+    .mission-pillars {
+      display: flex; flex-direction: column; gap: 1px;
+      background: rgba(201,168,76,0.1);
+    }
+    .pillar {
+      background: var(--navy);
+      padding: 1.6rem 2rem;
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .pillar:hover { background: var(--navy-soft); transform: translateX(4px); }
+    .pillar-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 300;
+      color: var(--gold);
+      min-width: 2.5rem;
+      line-height: 1;
+    }
+    .pillar-content h4 {
+      font-size: 0.85rem; font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+    .pillar-content p {
+      font-size: 0.85rem; font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── ACTIONS ── */
+    #actions { background: var(--navy-mid); }
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px;
+      background: rgba(201,168,76,0.08);
+    }
+    .action-card {
+      background: var(--navy-mid);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .action-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--gold);
+      transition: height 0.4s ease;
+    }
+    .action-card:hover { background: rgba(22,36,54,0.95); }
+    .action-card:hover::before { height: 100%; }
+    .action-date {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .action-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 0.8rem;
+      color: var(--white);
+    }
+    .action-card p {
+      font-size: 0.88rem; font-weight: 300;
+      color: rgba(253,250,244,0.6);
+      line-height: 1.7;
+    }
+    .action-tag {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 0.3rem 0.8rem;
+    }
+
+    /* ── REUNIONS ── */
+    #reunions {
+      position: relative;
+    }
+    .reunion-highlight {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .reunion-visual {
+      position: relative;
+      height: 320px;
+      border: 1px solid rgba(201,168,76,0.15);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .reunion-visual-bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-soft) 100%);
+    }
+    .reunion-visual-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.06) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .reunion-visual-content {
+      position: relative; z-index: 2;
+      text-align: center;
+    }
+    .reunion-visual-content .time {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem; font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+    .reunion-visual-content .time-sub {
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+    .reunion-visual-content .divider {
+      width: 40px; height: 1px;
+      background: rgba(201,168,76,0.3);
+      margin: 1.2rem auto;
+    }
+    .reunion-visual-content .day {
+      font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--white);
+    }
+    .reunion-info { }
+    .reunion-info .location-label {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .reunion-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .reunion-info .address {
+      font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .reunion-info .note {
+      font-size: 0.88rem; font-weight: 300;
+      color: rgba(253,250,244,0.65);
+      line-height: 1.75;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(201,168,76,0.2);
+    }
+
+    /* ── REJOINDRE ── */
+    #rejoindre {
+      background: var(--navy-mid);
+      text-align: center;
+    }
+    .rejoindre-inner {
+      max-width: 680px; margin: 0 auto;
+    }
+    .rejoindre-inner .lead {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(253,250,244,0.8);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+    .rejoindre-inner p {
+      font-size: 0.95rem; font-weight: 300;
+      color: rgba(253,250,244,0.55);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 4rem;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 400;
+      color: var(--gold-light);
+      letter-spacing: 0.06em;
+    }
+    .footer-links {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--gold-light); }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(139,155,171,0.5);
+    }
+
+    /* ── QUOTE ── */
+    .quote-block {
+      position: relative;
+      padding: 4rem;
+      background: var(--navy);
+      border: 1px solid rgba(201,168,76,0.1);
+      overflow: hidden;
+    }
+    .quote-block::before {
+      content: '❝';
+      position: absolute;
+      top: 1rem; left: 2rem;
+      font-size: 6rem;
+      color: rgba(201,168,76,0.06);
+      font-family: 'Cormorant Garamond', serif;
+      line-height: 1;
+    }
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(253,250,244,0.8);
+      line-height: 1.65;
+      position: relative; z-index: 1;
+      max-width: 700px; margin: 0 auto;
+      text-align: center;
+    }
+    .quote-block cite {
+      display: block; margin-top: 1.2rem;
+      font-style: normal;
+      font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1; transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 0 1.5rem; min-height: 100svh; }
+      .hero-ornament { display: none; }
+      .mission-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .reunion-highlight { grid-template-columns: 1fr; }
+      footer { padding: 2rem 1.5rem; }
+      .quote-block { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <div class="wheel"></div>
+      <span>Rotary Paris Balard</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#mission">Notre mission</a></li>
+      <li><a href="#actions">Actions</a></li>
+      <li><a href="#reunions">Réunions</a></li>
+      <li><a href="#rejoindre">Nous rejoindre</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-tag">District 1660 · Paris 7<sup>e</sup></div>
+      <h1 class="hero-title">
+        Servir<br><em>au-delà</em><br>de soi-même
+      </h1>
+      <p class="hero-subtitle">
+        Le Rotary Club Paris Balard rassemble des professionnels engagés 
+        autour de l'idéal de servir — au sein de la communauté parisienne 
+        et à l'échelle internationale.
+      </p>
+      <div class="hero-cta">
+        <a href="#actions" class="btn-primary">Nos actions</a>
+        <a href="#rejoindre" class="btn-ghost">Rejoindre le club</a>
+      </div>
+    </div>
+    <div class="hero-ornament">
+      <div class="hero-ornament-inner">
+        <span class="year">1905</span>
+        <span class="year-label">Fondation du Rotary</span>
+        <div style="width:30px;height:1px;background:rgba(201,168,76,0.3);margin:0.8rem auto;"></div>
+        <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--text-muted);">SERVICE ABOVE SELF</span>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="line"></div>
+      <span>Découvrir</span>
+    </div>
+  </section>
+
+  <!-- INFOS PRATIQUES -->
+  <section id="infos" style="padding-top:0;">
+    <div class="infos-grid reveal">
+      <div class="info-card">
+        <div class="icon">🕗</div>
+        <h3>Réunions</h3>
+        <p>Chaque mercredi<br>à 19h00</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">📍</div>
+        <h3>Lieu</h3>
+        <p>Hôtel Bedford<br>17 rue de l'Arcade<br>75008 Paris</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">✉️</div>
+        <h3>Contact</h3>
+        <p><a href="mailto:parisbalard.rotary@gmail.com">parisbalard.rotary@gmail.com</a></p>
+      </div>
+      <div class="info-card">
+        <div class="icon">🌐</div>
+        <h3>District</h3>
+        <p>Rotary District 1660<br><a href="https://1660.fr/club/rotary-paris-balard/" target="_blank">1660.fr</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section id="mission">
+    <div class="mission-bg"></div>
+    <div class="section-header reveal">
+      <span class="section-tag">Qui sommes-nous</span>
+    </div>
+    <div class="mission-layout reveal">
+      <div class="mission-text">
+        <h2 class="section-title" style="margin-bottom:2rem;">
+          L'idéal de servir<br><em>en action</em>
+        </h2>
+        <p>
+          Le Rotary Club Paris Balard poursuit le but du Rotary International 
+          en développant des actions fondées sur les cinq domaines d'engagement 
+          du Rotary : la paix, la santé, l'eau, l'éducation et l'économie locale.
+        </p>
+        <p>
+          Fondé sur la conviction que les relations professionnelles et humaines 
+          sont un vecteur d'action au service de l'intérêt général, notre club 
+          réunit des femmes et des hommes de tous horizons, unis par l'envie 
+          de faire la différence.
+        </p>
+        <p>
+          Membre actif du District 1660 à Paris, nous collaborons régulièrement 
+          avec d'autres clubs pour des actions à plus grande échelle, 
+          localement comme à l'international.
+        </p>
+      </div>
+      <div class="mission-pillars">
+        <div class="pillar">
+          <span class="pillar-num">01</span>
+          <div class="pillar-content">
+            <h4>Paix &amp; dialogue</h4>
+            <p>Favoriser l'entente internationale par des échanges et partenariats interculturels.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">02</span>
+          <div class="pillar-content">
+            <h4>Santé &amp; solidarité</h4>
+            <p>Soutenir des actions humanitaires de santé, en France et à l'étranger.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">03</span>
+          <div class="pillar-content">
+            <h4>Éducation &amp; jeunesse</h4>
+            <p>Accompagner l'accès à l'éducation et soutenir les nouvelles générations.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">04</span>
+          <div class="pillar-content">
+            <h4>Communauté locale</h4>
+            <p>Agir concrètement pour les familles et enfants défavorisés de notre territoire.</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar-num">05</span>
+          <div class="pillar-content">
+            <h4>Environnement</h4>
+            <p>Intégrer la protection de la planète dans nos engagements rotariens.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CITATION -->
+  <div class="quote-block reveal" style="margin:0 4rem;">
+    <blockquote>
+      « Cultiver l'idéal de servir auquel aspire toute profession honorable, 
+      mettre à profit les relations et contacts pour servir l'intérêt général, 
+      faire progresser l'entente entre les peuples et le respect de la paix. »
+    </blockquote>
+    <cite>— Objet du Rotary Club Paris Balard</cite>
+  </div>
+
+  <!-- ACTIONS -->
+  <section id="actions">
+    <div class="section-header reveal">
+      <span class="section-tag">Nos engagements</span>
+    </div>
+    <h2 class="section-title reveal" style="margin-bottom:3rem;">
+      Actions <em>récentes</em>
+    </h2>
+    <div class="actions-grid reveal">
+      <div class="action-card">
+        <div class="action-date">Juin 2026</div>
+        <h3>Récital caritatif France-Brésil</h3>
+        <p>
+          En partenariat avec le Comité Inter-Pays France-Brésil, soirée musicale 
+          au Théâtre de l'Alliance Française avec le pianiste Ryutaro Suzuki. 
+          Les fonds soutiennent des projets de santé, d'éducation et de 
+          francophonie au Brésil (São Jerônimo, Macapá, Rio de Janeiro).
+        </p>
+        <span class="action-tag">Culture & Solidarité</span>
+      </div>
+      <div class="action-card">
+        <div class="action-date">Janvier 2026</div>
+        <h3>Collecte de produits d'hygiène</h3>
+        <p>
+          En collaboration avec plusieurs clubs du District 1660, le Rotary Paris 
+          Balard a récolté 850 produits d'hygiène lors d'une grande collecte 
+          solidaire, pour les personnes en situation de précarité.
+        </p>
+        <span class="action-tag">Solidarité locale</span>
+      </div>
+      <div class="action-card">
+        <div class="action-date">Déc. 2025</div>
+        <h3>Collecte de jouets de Noël</h3>
+        <p>
+          En partenariat avec le Rotary Paris Agora, plus de 3 000 jouets et 
+          livres ont été réunis pour offrir un beau Noël aux enfants défavorisés 
+          de 0 à 12 ans, via les services sociaux et plusieurs associations 
+          partenaires.
+        </p>
+        <span class="action-tag">Enfance</span>
+      </div>
+      <div class="action-card">
+        <div class="action-date">Avril–Mai 2025</div>
+        <h3>Concours d'Éloquence Inter-Rotary</h3>
+        <p>
+          Co-organisé avec le Rotary Club Paris Haussmann, ce concours 
+          intergénérationnel a mis à l'honneur l'art oratoire et le dialogue, 
+          en parfaite adéquation avec les valeurs du Rotary.
+        </p>
+        <span class="action-tag">Jeunesse & Culture</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- REUNIONS -->
+  <section id="reunions" style="background:var(--navy-mid);">
+    <div class="section-header reveal">
+      <span class="section-tag">Vie du club</span>
+    </div>
+    <h2 class="section-title reveal" style="margin-bottom:3rem;">
+      Nos <em>réunions</em>
+    </h2>
+    <div class="reunion-highlight reveal">
+      <div class="reunion-visual">
+        <div class="reunion-visual-bg"></div>
+        <div class="reunion-visual-grid"></div>
+        <div class="reunion-visual-content">
+          <span class="time">19h00</span>
+          <span class="time-sub">Dîner</span>
+          <div class="divider"></div>
+          <span class="day">Chaque mercredi</span>
+        </div>
+      </div>
+      <div class="reunion-info">
+        <p class="location-label">Lieu de réunion</p>
+        <h3>Hôtel Bedford</h3>
+        <p class="address">
+          17 rue de l'Arcade<br>
+          75008 Paris
+        </p>
+        <p class="note">
+          Nos réunions hebdomadaires du mercredi soir sont l'occasion d'échanger, 
+          d'accueillir des intervenants et de préparer nos actions. Elles sont ouvertes 
+          à nos membres et à leurs invités. Vous souhaitez participer en tant 
+          qu'invité ? Contactez-nous par e-mail.
+        </p>
+        <div style="margin-top:2rem;">
+          <a href="mailto:parisbalard.rotary@gmail.com" class="btn-ghost">Nous contacter</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REJOINDRE -->
+  <section id="rejoindre">
+    <div class="rejoindre-inner">
+      <div class="section-header reveal" style="justify-content:center;">
+        <span class="section-tag">Devenir membre</span>
+      </div>
+      <p class="lead reveal">
+        « Chaque rotarien est la meilleure publicité que son club puisse faire. »
+      </p>
+      <p class="reveal">
+        Rejoindre le Rotary Club Paris Balard, c'est intégrer un réseau de 
+        professionnels engagés, partager des valeurs d'entraide et de probité, 
+        et participer concrètement à des actions qui changent des vies — 
+        localement et dans le monde.
+      </p>
+      <div class="reveal" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
+        <a href="mailto:parisbalard.rotary@gmail.com" class="btn-primary">Prendre contact</a>
+        <a href="https://1660.fr/rejoignez-nous/" target="_blank" class="btn-ghost">En savoir plus</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Rotary Club Paris Balard · District 1660</div>
+    <div class="footer-links">
+      <a href="https://1660.fr/club/rotary-paris-balard/" target="_blank">District 1660</a>
+      <a href="https://www.rotary.org/fr" target="_blank">Rotary International</a>
+      <a href="mailto:parisbalard.rotary@gmail.com">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 Rotary Club Paris Balard</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
