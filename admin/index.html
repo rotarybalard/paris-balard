@@ -16,19 +16,20 @@
 </head>
 <body>
   <button id="logout-btn" onclick="logout()">Se déconnecter</button>
-  <script>
-    function logout() {
-      localStorage.clear();
-      sessionStorage.clear();
-      window.location.href = '/admin';
+ <script>
+  function logout() {
+    localStorage.removeItem('sveltia-cms.user');
+    localStorage.removeItem('sveltia-cms.prefs');
+    sessionStorage.clear();
+    window.location.reload();
+  }
+
+  const interval = setInterval(() => {
+    if (localStorage.getItem('sveltia-cms.user')) {
+      document.getElementById('logout-btn').style.display = 'block';
+      clearInterval(interval);
     }
-    // Afficher le bouton si connecté
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const hasToken = localStorage.getItem('sveltia-cms.user') !== null;
-        if (hasToken) document.getElementById('logout-btn').style.display = 'block';
-      }, 2000);
-    });
-  </script>
+  }, 1000);
+</script>
 </body>
 </html>
