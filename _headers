@@ -1,2 +1,3 @@
--e /*
+/*
   Cache-Control: no-cache, must-revalidate
+  X-Frame-Options: SAMEORIGIN
